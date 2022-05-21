@@ -14,6 +14,18 @@ class HomeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        LocationManager.shared.didUpdateLocation = { (location) in
+            guard let location = location else { return }
+            print(location)
+            APIProvider.shared.request(.searchWithLocation(latitude: location.latitude, longitude: location.longitude), mapObject: BusinessesResponseModel.self) { result in
+                switch result {
+                case .success(let model):
+                    print(model.businesses.first)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
     }
     
 }

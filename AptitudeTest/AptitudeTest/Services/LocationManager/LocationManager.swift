@@ -21,7 +21,7 @@ class LocationManager: NSObject {
     
     var didUpdateLocation: ((CLLocationCoordinate2D?) -> Void)?
     
-    override init() {
+    override private init() {
         super.init()
         setup()
     }
@@ -63,6 +63,7 @@ extension LocationManager: CLLocationManagerDelegate {
 //            print(city + ", " + country)
 //        }
         stopTracking()
+        manager.delegate = nil
     }
     
     func fetchCityAndCountry(from location: CLLocation, completion: @escaping (_ city: String?, _ country:  String?, _ error: Error?) -> ()) {
