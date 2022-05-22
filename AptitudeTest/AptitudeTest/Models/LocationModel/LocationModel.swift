@@ -16,6 +16,7 @@ struct LocationModel: Codable {
     var country: String?
     var state: String?
     var displayAddress: [String]?
+    var crossStreets: String?
     
     enum CodingKeys: String, CodingKey {
         case address1 = "address1"
@@ -26,6 +27,7 @@ struct LocationModel: Codable {
         case country = "country"
         case state = "state"
         case displayAddress = "display_address"
+        case crossStreets = "cross_streets"
     }
     
 }

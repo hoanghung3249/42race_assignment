@@ -44,6 +44,50 @@
             </objects>
             <point key="canvasLocation" x="1448" y="110"/>
         </scene>
+        <!--Business Detail View Controller-->
+        <scene sceneID="DKa-WK-hAg">
+            <objects>
+                <viewController storyboardIdentifier="BusinessDetailViewController" id="pHU-uo-oQ1" customClass="BusinessDetailViewController" customModule="AptitudeTest" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ovp-0p-fEp">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="b2D-ZS-qll">
+                                <rect key="frame" x="0.0" y="44" width="414" height="180"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="180" id="Lzf-2I-D7q"/>
+                                </constraints>
+                            </imageView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="C6O-lP-Ujp">
+                                <rect key="frame" x="0.0" y="224" width="414" height="638"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="pHU-uo-oQ1" id="KlV-Oh-3OS"/>
+                                    <outlet property="delegate" destination="pHU-uo-oQ1" id="93N-qL-KmA"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="lxQ-oC-AMg"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="C6O-lP-Ujp" firstAttribute="top" secondItem="b2D-ZS-qll" secondAttribute="bottom" id="6iA-dj-pTw"/>
+                            <constraint firstItem="lxQ-oC-AMg" firstAttribute="trailing" secondItem="C6O-lP-Ujp" secondAttribute="trailing" id="9jB-pO-gE7"/>
+                            <constraint firstItem="lxQ-oC-AMg" firstAttribute="trailing" secondItem="b2D-ZS-qll" secondAttribute="trailing" id="ac6-1N-qnc"/>
+                            <constraint firstItem="b2D-ZS-qll" firstAttribute="leading" secondItem="lxQ-oC-AMg" secondAttribute="leading" id="rnz-32-CLK"/>
+                            <constraint firstItem="C6O-lP-Ujp" firstAttribute="leading" secondItem="lxQ-oC-AMg" secondAttribute="leading" id="uoV-Gi-5Gn"/>
+                            <constraint firstItem="lxQ-oC-AMg" firstAttribute="bottom" secondItem="C6O-lP-Ujp" secondAttribute="bottom" id="whz-4m-6Cl"/>
+                            <constraint firstItem="b2D-ZS-qll" firstAttribute="top" secondItem="lxQ-oC-AMg" secondAttribute="top" id="xgU-3s-xWj"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="businessImageView" destination="b2D-ZS-qll" id="qlF-cC-xS1"/>
+                        <outlet property="tableView" destination="C6O-lP-Ujp" id="WzN-ty-Wtp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EgY-Q5-IQK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2182" y="121"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="ERN-P6-wYd">
             <objects>

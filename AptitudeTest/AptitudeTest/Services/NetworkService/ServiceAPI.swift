@@ -34,6 +34,7 @@ protocol APITarget {
 enum ServiceAPI {
     
     case searchWithLocation(latitude: Double, longitude: Double)
+    case businessDetail(id: String)
     
 }
 
@@ -52,12 +53,15 @@ extension ServiceAPI: APITarget {
         switch self {
         case .searchWithLocation(_, _):
             return "/businesses/search"
+        case .businessDetail(let id):
+            return "/businesses/\(id)"
         }
     }
     
     var method: HTTPMethod {
         switch self {
         case .searchWithLocation(_, _): return .get
+        case .businessDetail(_): return .get
         }
     }
     

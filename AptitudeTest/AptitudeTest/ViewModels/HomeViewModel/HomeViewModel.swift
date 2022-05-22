@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class HomeViewModel {
+final class HomeViewModel {
     
     private var bag = DisposeBag()
     private var latitude: Double?

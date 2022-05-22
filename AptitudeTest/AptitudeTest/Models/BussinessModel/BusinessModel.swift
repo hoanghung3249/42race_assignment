@@ -26,6 +26,11 @@ struct BusinessModel: Codable {
     var price: String?
     var location: LocationModel?
     
+    var isClaimed: Bool?
+    var photos: [String]?
+    var hours: [HourModel]?
+    var messaging: MessagingModel?
+    
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case alias = "alias"
@@ -43,6 +48,10 @@ struct BusinessModel: Codable {
         case transactions = "transactions"
         case price = "price"
         case location = "location"
+        case isClaimed = "is_claimed"
+        case photos = "photos"
+        case hours = "hours"
+        case messaging = "messaging"
     }
     
 }

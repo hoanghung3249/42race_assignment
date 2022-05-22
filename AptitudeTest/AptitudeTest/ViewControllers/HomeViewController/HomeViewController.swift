@@ -8,25 +8,18 @@
 import UIKit
 import RxSwift
 
-class HomeViewController: UIViewController {
+class HomeViewController: BaseViewController {
     
     @IBOutlet weak var tableView: UITableView!
     private var viewModel = HomeViewModel()
-    private var bag = DisposeBag()
     
     // MARK: - Life Cycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupTableView()
-        setupBinding()
-        setupErrorBinding()
-    }
     
-    private func setupTableView() {
+    override func setupTableView() {
         tableView.register(UINib(nibName: "BusinessCell", bundle: nil), forCellReuseIdentifier: "BusinessCell")
     }
     
-    private func setupBinding() {
+    override func setupBinding() {
         viewModel.businesses
             .subscribe(onNext: { [weak self] models in
                 guard let self = self else { return }
@@ -36,7 +29,7 @@ class HomeViewController: UIViewController {
             }).disposed(by: bag)
     }
     
-    private func setupErrorBinding() {
+    override func setupErrorBinding() {
         viewModel.errorRelay
             .asDriver(onErrorJustReturn: "")
             .drive { [weak self] error in
@@ -67,5 +60,17 @@ extension HomeViewController: UITableViewDataSource {
 
 // MARK: - TableView Delegate
 extension HomeViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let model = viewModel.businesses.value[indexPath.row]
+        guard let businessId = model.id else {
+            return
+        }
+        let businessDetailViewModel = BusinessDetailViewModel(businessId: businessId)
+        
+        guard let vc = storyboard?.instantiateViewController(withIdentifier: "BusinessDetailViewController") as? BusinessDetailViewController else { return }
+        vc.viewModel = businessDetailViewModel
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     
 }
