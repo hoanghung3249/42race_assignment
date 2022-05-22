@@ -6,8 +6,27 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 
 typealias ResponseHandler<T> = ((Result<T, Error>) -> Void)?
+
+enum APIError: Error, CustomStringConvertible {
+
+    case networkError(message: String)
+    case localProcessError(message: String)
+    
+    var description: String {
+        switch self {
+        case .networkError(let message):
+            print("Networking Error: \(message)")
+            return "Something went wrong! Please try again."
+        case .localProcessError(let message):
+            print("Local Error: \(message)")
+            return "Some errors occurred. Please try again!"
+        }
+    }
+}
 
 final class APIProvider {
     static let shared = APIProvider()
@@ -57,6 +76,50 @@ final class APIProvider {
             }
         })
         .resume()
+    }
+    
+    func request<ResponseModel: Codable>(_ target: ServiceAPI, mapObject: ResponseModel.Type) -> Observable<ResponseModel> {
+        var url = target.baseURL.appendingPathComponent(target.path)
+        
+        let param = target.parameters ?? [:]
+        // Adding query values
+        for (key,value) in param {
+            url = url.appending(key, value: value)
+        }
+        
+        url = url.appending("limit", value: "40")
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = target.method.rawValue
+        // Adding header values
+        for (key, value) in target.header {
+            request.addValue("Bearer \(value)", forHTTPHeaderField: key)
+        }
+        
+        return Observable.create { [weak self] observer in
+            
+            let task = self?.session?.dataTask(with: request, completionHandler: { data, response, error in
+                if let error = error {
+                    print("Error: \(error.localizedDescription)")
+                    observer.onError(APIError.networkError(message: error.localizedDescription))
+                }
+                if let data = data {
+                    do {
+                        let resultObject = try JSONDecoder().decode(mapObject, from: data)
+                        observer.onNext(resultObject)
+                    } catch let err {
+                        observer.onError(APIError.localProcessError(message: err.localizedDescription))
+                    }
+                }
+                observer.onCompleted()
+            })
+            
+            task?.resume()
+            
+            return Disposables.create {
+                task?.cancel()
+            }
+        }
     }
 }
 

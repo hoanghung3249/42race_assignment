@@ -21,8 +21,8 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
-                                    <outlet property="dataSource" destination="W8q-VZ-HJW" id="LOV-h8-psM"/>
-                                    <outlet property="delegate" destination="W8q-VZ-HJW" id="ndd-Wk-Szj"/>
+                                    <outlet property="dataSource" destination="W8q-VZ-HJW" id="3hp-yc-qn3"/>
+                                    <outlet property="delegate" destination="W8q-VZ-HJW" id="W6Y-q6-9pD"/>
                                 </connections>
                             </tableView>
                         </subviews>
