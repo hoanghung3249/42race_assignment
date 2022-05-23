@@ -14,6 +14,7 @@
 		0E4332A22839F1A4003742DB /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0E4332A12839F1A4003742DB /* Kingfisher */; };
 		0E4332A4283A0173003742DB /* Date+Extesions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4332A3283A0173003742DB /* Date+Extesions.swift */; };
 		0E4332A7283A0685003742DB /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4332A6283A0685003742DB /* BaseViewController.swift */; };
+		0E4332AA283BB60E003742DB /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4332A9283BB60E003742DB /* BaseViewModel.swift */; };
 		0E83FF3D2838BCEC0005CEF0 /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E83FF3C2838BCEC0005CEF0 /* CategoryModel.swift */; };
 		0E83FF402838BEA70005CEF0 /* CoordinateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E83FF3F2838BEA70005CEF0 /* CoordinateModel.swift */; };
 		0E83FF432838BF870005CEF0 /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E83FF422838BF870005CEF0 /* LocationModel.swift */; };
@@ -66,6 +67,7 @@
 		0E43329E2839EB66003742DB /* MessagingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingModel.swift; sourceTree = "<group>"; };
 		0E4332A3283A0173003742DB /* Date+Extesions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extesions.swift"; sourceTree = "<group>"; };
 		0E4332A6283A0685003742DB /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		0E4332A9283BB60E003742DB /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		0E83FF3C2838BCEC0005CEF0 /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
 		0E83FF3F2838BEA70005CEF0 /* CoordinateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateModel.swift; sourceTree = "<group>"; };
 		0E83FF422838BF870005CEF0 /* LocationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
@@ -162,6 +164,14 @@
 				0E4332A6283A0685003742DB /* BaseViewController.swift */,
 			);
 			path = BaseViewController;
+			sourceTree = "<group>";
+		};
+		0E4332A8283BB5FD003742DB /* BaseViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				0E4332A9283BB60E003742DB /* BaseViewModel.swift */,
+			);
+			path = BaseViewModel;
 			sourceTree = "<group>";
 		};
 		0E83FF3E2838BE9A0005CEF0 /* CoordinateModel */ = {
@@ -315,6 +325,7 @@
 		0EA9142E2838911A0018CE3A /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				0E4332A8283BB5FD003742DB /* BaseViewModel */,
 				0E4332972839E517003742DB /* BusinessDetailViewModel */,
 				0EA9142F283891280018CE3A /* HomeViewModel */,
 			);
@@ -548,6 +559,7 @@
 				0E43329F2839EB66003742DB /* MessagingModel.swift in Sources */,
 				0E83FF3D2838BCEC0005CEF0 /* CategoryModel.swift in Sources */,
 				0EA91437283894670018CE3A /* Constants.swift in Sources */,
+				0E4332AA283BB60E003742DB /* BaseViewModel.swift in Sources */,
 				0E83FF432838BF870005CEF0 /* LocationModel.swift in Sources */,
 				0EA914342838943D0018CE3A /* ServiceAPI.swift in Sources */,
 				0EA91429283888D70018CE3A /* HomeViewController.swift in Sources */,

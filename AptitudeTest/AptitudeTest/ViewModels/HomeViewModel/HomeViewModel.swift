@@ -9,16 +9,21 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class HomeViewModel {
+enum BusinessSeachType {
+    case term
+}
+
+final class HomeViewModel: BaseViewModel {
     
-    private var bag = DisposeBag()
     private var latitude: Double?
     private var longitude: Double?
+    private var isPaginationOn = false
+    private var isFirstLoad = true
     private(set) var businesses = BehaviorRelay<[BusinessModel]>(value: [])
-    private(set) var errorRelay = PublishRelay<String>()
     var finishedGetLocation = BehaviorRelay<Void>(value: ())
     
-    init() {
+    override init() {
+        super.init()
         LocationManager.shared.didUpdateLocation = { [weak self] (location) in
             guard let self = self, let location = location else { return }
             print(location)
@@ -31,19 +36,54 @@ final class HomeViewModel {
     }
     
     private func binding() {
+        
         finishedGetLocation
             .asObservable()
             .flatMapLatest({ [weak self] _ in
-                APIProvider.shared.request(.searchWithLocation(latitude: self?.latitude ?? 0.0, longitude: self?.longitude ?? 0.0), mapObject: BusinessesResponseModel.self)
+                APIProvider.shared.request(.searchWithLocation(latitude: self?.latitude ?? 0.0, longitude: self?.longitude ?? 0.0, offSet: "0"), mapObject: BusinessesResponseModel.self)
             })
-            .map({ $0.businesses.sorted { b1, b2 in
-                b1.distance ?? 0.0 < b2.distance ?? 0.0 && b1.rating ?? 0.0 > b2.rating ?? 0.0
-            } })
             .asDriver { [weak self] error in
                 self?.errorRelay.accept((error as? APIError)?.description ?? "")
-                return Driver.just([])
+                return Driver.empty()
             }
-            .drive(businesses)
+            .drive(onNext: { [weak self] businessResponseModel in
+                guard let self = self else { return }
+                self.total = businessResponseModel.total
+                self.isFirstLoad = false
+                var value = self.businesses.value
+                value.append(contentsOf: businessResponseModel.businesses)
+                self.businesses.accept(value)
+            })
+            .disposed(by: bag)
+    }
+    
+    func fetchMoreBusiness(isPagination: Bool) {
+        guard !isFirstLoad else { return }
+        if isPagination {
+            isPaginationOn = true
+        }
+        if offSet + 40 <= total {
+            offSet += 40
+        } else {
+            let newOffset = total - offSet
+            offSet += newOffset
+        }
+        print("----Offset: \(offSet)")
+        APIProvider.shared.request(.searchWithLocation(latitude: self.latitude ?? 0.0, longitude: self.longitude ?? 0.0, offSet: "\(offSet)"), mapObject: BusinessesResponseModel.self)
+            .asDriver { [weak self] error in
+                    self?.errorRelay.accept((error as? APIError)?.description ?? "")
+                    return Driver.empty()
+            }
+            .drive(onNext: { [weak self] businessResponseModel in
+                guard let self = self else { return }
+                if isPagination {
+                    self.isPaginationOn = false
+                }
+                self.total = businessResponseModel.total
+                var value = self.businesses.value
+                value.append(contentsOf: businessResponseModel.businesses)
+                self.businesses.accept(value)
+            })
             .disposed(by: bag)
     }
     

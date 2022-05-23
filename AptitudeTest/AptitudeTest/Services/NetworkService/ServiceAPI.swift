@@ -24,16 +24,20 @@ protocol APITarget {
     /// The HTTP method used in the request.
     var method: HTTPMethod { get }
     
+    /// The header value for the request
     var header: [String: String] { get }
     
+    // The query values for request
     var parameters: [String: String]? { get }
     
 }
 
 
 enum ServiceAPI {
+    // Business Search
+    case searchWithLocation(latitude: Double, longitude: Double, offSet: String)
     
-    case searchWithLocation(latitude: Double, longitude: Double)
+    // Business Detail
     case businessDetail(id: String)
     
 }
@@ -51,7 +55,7 @@ extension ServiceAPI: APITarget {
     
     var path: String {
         switch self {
-        case .searchWithLocation(_, _):
+        case .searchWithLocation(_, _, _):
             return "/businesses/search"
         case .businessDetail(let id):
             return "/businesses/\(id)"
@@ -60,15 +64,15 @@ extension ServiceAPI: APITarget {
     
     var method: HTTPMethod {
         switch self {
-        case .searchWithLocation(_, _): return .get
+        case .searchWithLocation(_, _, _): return .get
         case .businessDetail(_): return .get
         }
     }
     
     var parameters: [String : String]? {
         switch self {
-        case .searchWithLocation(let latitude, let longitude):
-            return ["latitude": "\(latitude)", "longitude": "\(longitude)"]
+        case .searchWithLocation(let latitude, let longitude, let offSet):
+            return ["latitude": "\(latitude)", "longitude": "\(longitude)", "offset": "\(offSet)"]
         default: return nil
         }
     }

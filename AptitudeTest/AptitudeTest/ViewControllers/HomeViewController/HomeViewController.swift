@@ -12,6 +12,7 @@ class HomeViewController: BaseViewController {
     
     @IBOutlet weak var tableView: UITableView!
     private var viewModel = HomeViewModel()
+    private var isPaginationOn = false
     
     // MARK: - Life Cycle
     
@@ -34,8 +35,7 @@ class HomeViewController: BaseViewController {
             .asDriver(onErrorJustReturn: "")
             .drive { [weak self] error in
                 guard let self = self else { return }
-//                self.showAlert(alertMessage: error.description)
-                print(error)
+                self.showAlert(message: error)
             }
             .disposed(by: bag)
     }
@@ -73,4 +73,29 @@ extension HomeViewController: UITableViewDelegate {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let pos = scrollView.contentOffset.y
+        if pos > tableView.contentSize.height - 50 - scrollView.frame.size.height {
+            guard !viewModel.isPaginationOn else { return }
+            
+            viewModel.fetchMoreBusiness(isPagination: true)
+        }
+    }
+    
+    func makeRequest(isPagination: Bool, completion: @escaping (Result<[String], Error>) -> Void){
+        if isPagination {
+            isPaginationOn = true
+        }
+        DispatchQueue.global().asyncAfter(deadline: .now() + (isPagination ? 2 : 3), execute: {
+            let data = ["Hello","You", "are","Welcome", "To", "Mobikul", "Hello","You", "are","Welcome", "To", "Mobikul","Hello","You", "are","Welcome", "To", "Mobikul","Hello","You", "are","Welcome", "To", "Mobikul",
+                        "Mobikul","Hello","You", "are","Welcome", "To", "Mobikul"]
+            let nextData = ["Enjoy", "The", "Pagination", "Blog",
+                            "Enjoy", "The", "Pagination", "Blog",
+                            "Enjoy", "The", "Pagination", "Blog"]
+            completion(.success(isPagination ? nextData : data))
+            if isPagination {
+                self.isPaginationOn = false
+            }
+        })
+    }
 }

@@ -12,13 +12,26 @@ import RxCocoa
 import Kingfisher
 import UIKit
 
-final class BusinessDetailViewModel {
+enum BusinessDetailType {
+    case address, categories, contact, rating, hours
+    
+    var numberOfRow: Int {
+        switch self {
+        case .address: return 1
+        case .categories: return 1
+        case .contact: return 1
+        case .rating: return 1
+        case .hours: return 1
+        }
+    }
+}
+
+final class BusinessDetailViewModel: BaseViewModel {
     
     private var businessId: String?
-    private var bag = DisposeBag()
     private(set) var businessModel = BehaviorRelay<BusinessModel?>(value: nil)
     private(set) var businessImage = BehaviorRelay<UIImage?>(value: nil)
-    private(set) var errorRelay = PublishRelay<String>()
+    private(set) var businessDetailType: [BusinessDetailType] = [.address, .categories, .contact, .rating, .hours]
     
     init(businessId: String) {
         self.businessId = businessId
@@ -43,8 +56,6 @@ final class BusinessDetailViewModel {
                 self?.businessModel.accept(model)
             })
             .disposed(by: bag)
-
-        
     }
     
 }
