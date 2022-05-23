@@ -17,10 +17,10 @@ final class HomeViewModel: BaseViewModel {
     
     private var latitude: Double?
     private var longitude: Double?
-    private var isPaginationOn = false
+    var isPaginationOn = false
     private var isFirstLoad = true
     private(set) var businesses = BehaviorRelay<[BusinessModel]>(value: [])
-    var finishedGetLocation = BehaviorRelay<Void>(value: ())
+    var reloadData = BehaviorRelay<Void>(value: ())
     
     override init() {
         super.init()
@@ -29,7 +29,7 @@ final class HomeViewModel: BaseViewModel {
             print(location)
             self.latitude = location.latitude
             self.longitude = location.longitude
-            self.finishedGetLocation.accept(())
+            self.reloadData.accept(())
         }
         
         binding()
@@ -37,7 +37,7 @@ final class HomeViewModel: BaseViewModel {
     
     private func binding() {
         
-        finishedGetLocation
+        reloadData
             .asObservable()
             .flatMapLatest({ [weak self] _ in
                 APIProvider.shared.request(.searchWithLocation(latitude: self?.latitude ?? 0.0, longitude: self?.longitude ?? 0.0, offSet: "0"), mapObject: BusinessesResponseModel.self)
@@ -48,11 +48,10 @@ final class HomeViewModel: BaseViewModel {
             }
             .drive(onNext: { [weak self] businessResponseModel in
                 guard let self = self else { return }
-                self.total = businessResponseModel.total
+                self.setTotalResponse(businessResponseModel.total)
+                self.resetOffSet()
                 self.isFirstLoad = false
-                var value = self.businesses.value
-                value.append(contentsOf: businessResponseModel.businesses)
-                self.businesses.accept(value)
+                self.businesses.accept(businessResponseModel.businesses)
             })
             .disposed(by: bag)
     }
@@ -79,7 +78,8 @@ final class HomeViewModel: BaseViewModel {
                 if isPagination {
                     self.isPaginationOn = false
                 }
-                self.total = businessResponseModel.total
+                self.setTotalResponse(businessResponseModel.total)
+                // Appending data
                 var value = self.businesses.value
                 value.append(contentsOf: businessResponseModel.businesses)
                 self.businesses.accept(value)

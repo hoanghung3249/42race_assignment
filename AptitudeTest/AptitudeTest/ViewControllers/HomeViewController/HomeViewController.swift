@@ -11,13 +11,16 @@ import RxSwift
 class HomeViewController: BaseViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    private let refreshControl = UIRefreshControl()
     private var viewModel = HomeViewModel()
-    private var isPaginationOn = false
     
     // MARK: - Life Cycle
     
     override func setupTableView() {
+        tableView.refreshControl = refreshControl
         tableView.register(UINib(nibName: "BusinessCell", bundle: nil), forCellReuseIdentifier: "BusinessCell")
+        // Configure Refresh Control
+        refreshControl.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
     }
     
     override func setupBinding() {
@@ -26,6 +29,7 @@ class HomeViewController: BaseViewController {
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
+                    self.refreshControl.endRefreshing()
                 }
             }).disposed(by: bag)
     }
@@ -38,6 +42,10 @@ class HomeViewController: BaseViewController {
                 self.showAlert(message: error)
             }
             .disposed(by: bag)
+    }
+    
+    @objc private func refreshData(_ sender: Any) {
+        viewModel.reloadData.accept(())
     }
 }
 
@@ -80,22 +88,5 @@ extension HomeViewController: UITableViewDelegate {
             
             viewModel.fetchMoreBusiness(isPagination: true)
         }
-    }
-    
-    func makeRequest(isPagination: Bool, completion: @escaping (Result<[String], Error>) -> Void){
-        if isPagination {
-            isPaginationOn = true
-        }
-        DispatchQueue.global().asyncAfter(deadline: .now() + (isPagination ? 2 : 3), execute: {
-            let data = ["Hello","You", "are","Welcome", "To", "Mobikul", "Hello","You", "are","Welcome", "To", "Mobikul","Hello","You", "are","Welcome", "To", "Mobikul","Hello","You", "are","Welcome", "To", "Mobikul",
-                        "Mobikul","Hello","You", "are","Welcome", "To", "Mobikul"]
-            let nextData = ["Enjoy", "The", "Pagination", "Blog",
-                            "Enjoy", "The", "Pagination", "Blog",
-                            "Enjoy", "The", "Pagination", "Blog"]
-            completion(.success(isPagination ? nextData : data))
-            if isPagination {
-                self.isPaginationOn = false
-            }
-        })
     }
 }

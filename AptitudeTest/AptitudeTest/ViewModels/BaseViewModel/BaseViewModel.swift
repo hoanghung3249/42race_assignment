@@ -17,3 +17,16 @@ class BaseViewModel {
     var offSet = 0
     
 }
+
+// MARK: - Supporting functions
+extension BaseViewModel {
+    
+    func resetOffSet() {
+        offSet = 0
+    }
+    
+    func setTotalResponse(_ total: Int) {
+        self.total = total
+    }
+    
+}
