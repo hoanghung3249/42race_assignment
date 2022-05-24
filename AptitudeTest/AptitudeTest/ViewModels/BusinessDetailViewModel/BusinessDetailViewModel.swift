@@ -48,6 +48,7 @@ final class BusinessDetailViewModel: BaseViewModel {
             .shared
             .request(.businessDetail(id: businessId),
                      mapObject: BusinessModel.self)
+            .trackActivity(loadingActivity)
             .asDriver { [weak self] error in
                 self?.errorRelay.accept((error as? APIError)?.description ?? "")
                 return Driver.empty()

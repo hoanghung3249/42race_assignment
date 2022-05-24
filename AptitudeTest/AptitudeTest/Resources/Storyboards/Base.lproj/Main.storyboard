@@ -17,32 +17,101 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Exw-OO-Yjq">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Exw-OO-Yjq">
+                                <rect key="frame" x="0.0" y="238" width="414" height="624"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="W8q-VZ-HJW" id="3hp-yc-qn3"/>
                                     <outlet property="delegate" destination="W8q-VZ-HJW" id="W6Y-q6-9pD"/>
                                 </connections>
                             </tableView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PUn-Zi-d9S">
+                                <rect key="frame" x="20" y="98" width="374" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="wtq-4e-bJT"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Oad-qy-9Vx">
+                                <rect key="frame" x="20" y="143" width="374" height="40"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sort by:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0qa-Xx-2gX">
+                                        <rect key="frame" x="0.0" y="0.0" width="187" height="40"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="3Oj-ja-M6Z">
+                                        <rect key="frame" x="187" y="0.0" width="187" height="41"/>
+                                        <segments>
+                                            <segment title="Distance"/>
+                                            <segment title="Rating"/>
+                                        </segments>
+                                    </segmentedControl>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="a5n-Oj-dZj"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="2tj-QN-BIH">
+                                <rect key="frame" x="20" y="188" width="374" height="40"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search by:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I8Z-sv-6Yc">
+                                        <rect key="frame" x="0.0" y="0.0" width="104.5" height="40"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="sos-GH-DQk">
+                                        <rect key="frame" x="104.5" y="0.0" width="269.5" height="41"/>
+                                        <segments>
+                                            <segment title="Name"/>
+                                            <segment title="Address"/>
+                                            <segment title="Cuisine"/>
+                                        </segments>
+                                    </segmentedControl>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="9S9-BO-1AE"/>
+                                </constraints>
+                            </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="EOO-gB-YaD">
+                                <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tiv-2Y-edv"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="2tj-QN-BIH" firstAttribute="leading" secondItem="tiv-2Y-edv" secondAttribute="leading" constant="20" id="3rb-ay-URl"/>
+                            <constraint firstItem="EOO-gB-YaD" firstAttribute="centerX" secondItem="0xx-U7-R2f" secondAttribute="centerX" id="CcT-sf-WAF"/>
                             <constraint firstItem="tiv-2Y-edv" firstAttribute="trailing" secondItem="Exw-OO-Yjq" secondAttribute="trailing" id="Hvh-ci-VIg"/>
+                            <constraint firstItem="PUn-Zi-d9S" firstAttribute="leading" secondItem="tiv-2Y-edv" secondAttribute="leading" constant="20" id="JCW-hE-zAa"/>
+                            <constraint firstItem="2tj-QN-BIH" firstAttribute="top" secondItem="Oad-qy-9Vx" secondAttribute="bottom" constant="5" id="JVn-xx-xKh"/>
                             <constraint firstItem="tiv-2Y-edv" firstAttribute="bottom" secondItem="Exw-OO-Yjq" secondAttribute="bottom" id="SV5-dz-X70"/>
-                            <constraint firstItem="Exw-OO-Yjq" firstAttribute="top" secondItem="tiv-2Y-edv" secondAttribute="top" id="TgB-hG-UBj"/>
+                            <constraint firstItem="EOO-gB-YaD" firstAttribute="centerY" secondItem="0xx-U7-R2f" secondAttribute="centerY" id="UhJ-t7-3TZ"/>
+                            <constraint firstItem="Oad-qy-9Vx" firstAttribute="top" secondItem="PUn-Zi-d9S" secondAttribute="bottom" constant="5" id="cCq-c9-wTW"/>
+                            <constraint firstItem="PUn-Zi-d9S" firstAttribute="top" secondItem="tiv-2Y-edv" secondAttribute="top" constant="10" id="cYZ-19-s4X"/>
+                            <constraint firstItem="Oad-qy-9Vx" firstAttribute="leading" secondItem="tiv-2Y-edv" secondAttribute="leading" constant="20" id="dbj-5U-NAS"/>
+                            <constraint firstItem="tiv-2Y-edv" firstAttribute="trailing" secondItem="Oad-qy-9Vx" secondAttribute="trailing" constant="20" id="gri-qd-fnX"/>
                             <constraint firstItem="Exw-OO-Yjq" firstAttribute="leading" secondItem="tiv-2Y-edv" secondAttribute="leading" id="mQv-zC-VCV"/>
+                            <constraint firstItem="Exw-OO-Yjq" firstAttribute="top" secondItem="2tj-QN-BIH" secondAttribute="bottom" constant="10" id="mRb-Ow-RFf"/>
+                            <constraint firstItem="tiv-2Y-edv" firstAttribute="trailing" secondItem="PUn-Zi-d9S" secondAttribute="trailing" constant="20" id="mpu-pd-V1T"/>
+                            <constraint firstItem="tiv-2Y-edv" firstAttribute="trailing" secondItem="2tj-QN-BIH" secondAttribute="trailing" constant="20" id="nci-PV-fQo"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Bussiness" id="yhu-1t-ToE"/>
                     <connections>
+                        <outlet property="indicatorView" destination="EOO-gB-YaD" id="2XC-4Z-SER"/>
+                        <outlet property="searchBySegment" destination="sos-GH-DQk" id="G05-H6-r8H"/>
+                        <outlet property="searchTextField" destination="PUn-Zi-d9S" id="6wx-HO-ci2"/>
+                        <outlet property="sortBySegment" destination="3Oj-ja-M6Z" id="2J1-Ef-nc0"/>
                         <outlet property="tableView" destination="Exw-OO-Yjq" id="sWt-oW-fyA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ot3-zq-QOi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1448" y="110"/>
+            <point key="canvasLocation" x="1446.376811594203" y="109.82142857142857"/>
         </scene>
         <!--Business Detail View Controller-->
         <scene sceneID="DKa-WK-hAg">
@@ -66,14 +135,19 @@
                                     <outlet property="delegate" destination="pHU-uo-oQ1" id="93N-qL-KmA"/>
                                 </connections>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Ddc-fE-KLC">
+                                <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="lxQ-oC-AMg"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="C6O-lP-Ujp" firstAttribute="top" secondItem="b2D-ZS-qll" secondAttribute="bottom" id="6iA-dj-pTw"/>
                             <constraint firstItem="lxQ-oC-AMg" firstAttribute="trailing" secondItem="C6O-lP-Ujp" secondAttribute="trailing" id="9jB-pO-gE7"/>
+                            <constraint firstItem="Ddc-fE-KLC" firstAttribute="centerX" secondItem="Ovp-0p-fEp" secondAttribute="centerX" id="LkS-S3-78p"/>
                             <constraint firstItem="lxQ-oC-AMg" firstAttribute="trailing" secondItem="b2D-ZS-qll" secondAttribute="trailing" id="ac6-1N-qnc"/>
                             <constraint firstItem="b2D-ZS-qll" firstAttribute="leading" secondItem="lxQ-oC-AMg" secondAttribute="leading" id="rnz-32-CLK"/>
+                            <constraint firstItem="Ddc-fE-KLC" firstAttribute="centerY" secondItem="Ovp-0p-fEp" secondAttribute="centerY" id="s62-9q-Pah"/>
                             <constraint firstItem="C6O-lP-Ujp" firstAttribute="leading" secondItem="lxQ-oC-AMg" secondAttribute="leading" id="uoV-Gi-5Gn"/>
                             <constraint firstItem="lxQ-oC-AMg" firstAttribute="bottom" secondItem="C6O-lP-Ujp" secondAttribute="bottom" id="whz-4m-6Cl"/>
                             <constraint firstItem="b2D-ZS-qll" firstAttribute="top" secondItem="lxQ-oC-AMg" secondAttribute="top" id="xgU-3s-xWj"/>
@@ -81,6 +155,7 @@
                     </view>
                     <connections>
                         <outlet property="businessImageView" destination="b2D-ZS-qll" id="qlF-cC-xS1"/>
+                        <outlet property="indicatorView" destination="Ddc-fE-KLC" id="5PQ-MC-HhN"/>
                         <outlet property="tableView" destination="C6O-lP-Ujp" id="WzN-ty-Wtp"/>
                     </connections>
                 </viewController>

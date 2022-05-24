@@ -78,7 +78,7 @@ final class APIProvider {
         .resume()
     }
     
-    func request<ResponseModel: Codable>(_ target: ServiceAPI, mapObject: ResponseModel.Type) -> Observable<ResponseModel> {
+    func request<ResponseModel: Codable>(_ target: ServiceAPI, offSet: String = "0", mapObject: ResponseModel.Type) -> Observable<ResponseModel> {
         var url = target.baseURL.appendingPathComponent(target.path)
         
         let param = target.parameters ?? [:]
@@ -88,6 +88,7 @@ final class APIProvider {
         }
         
         url = url.appending("limit", value: "40")
+        url = url.appending("offset", value: offSet)
         
         var request = URLRequest(url: url)
         request.httpMethod = target.method.rawValue
@@ -95,6 +96,8 @@ final class APIProvider {
         for (key, value) in target.header {
             request.addValue("Bearer \(value)", forHTTPHeaderField: key)
         }
+        
+        print("Request URL: \(String(describing: request.url?.absoluteString))")
         
         return Observable.create { [weak self] observer in
             

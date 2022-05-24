@@ -12,6 +12,7 @@ import RxCocoa
 class BaseViewController: UIViewController {
 
     var bag = DisposeBag()
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()

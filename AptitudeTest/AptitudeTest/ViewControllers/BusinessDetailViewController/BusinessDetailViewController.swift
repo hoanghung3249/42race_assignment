@@ -29,6 +29,12 @@ class BusinessDetailViewController: BaseViewController {
         }
 
         viewModel.getBusinessDetail()
+        
+        viewModel.loadingActivity
+            .asDriver()
+            .drive(indicatorView.rx.isAnimating)
+            .disposed(by: bag)
+        
         viewModel.businessModel
             .subscribe(onNext: { [weak self] model in
                 guard let self = self, let model = model else { return }

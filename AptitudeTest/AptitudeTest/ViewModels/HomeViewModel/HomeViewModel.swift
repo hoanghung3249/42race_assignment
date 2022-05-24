@@ -9,8 +9,22 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-enum BusinessSeachType {
-    case term
+enum BusinessSearchType: Int {
+    case term = 0
+    case address
+    case cuisine
+}
+
+enum BusinessSortType: Int {
+    case distance = 0
+    case rating
+    
+    var stringValue: String {
+        switch self {
+        case .distance: return "distance"
+        case .rating: return "rating"
+        }
+    }
 }
 
 final class HomeViewModel: BaseViewModel {
@@ -19,7 +33,11 @@ final class HomeViewModel: BaseViewModel {
     private var longitude: Double?
     var isPaginationOn = false
     private var isFirstLoad = true
+    private var serviceAPI: ServiceAPI?
     private(set) var businesses = BehaviorRelay<[BusinessModel]>(value: [])
+    var businessSortType = BehaviorRelay<BusinessSortType>(value: .distance)
+    var businessSearchType = BehaviorRelay<BusinessSearchType>(value: .term)
+    var searchText = PublishRelay<String>()
     var reloadData = BehaviorRelay<Void>(value: ())
     
     override init() {
@@ -36,11 +54,20 @@ final class HomeViewModel: BaseViewModel {
     }
     
     private func binding() {
-        
-        reloadData
-            .asObservable()
-            .flatMapLatest({ [weak self] _ in
-                APIProvider.shared.request(.searchWithLocation(latitude: self?.latitude ?? 0.0, longitude: self?.longitude ?? 0.0, offSet: "0"), mapObject: BusinessesResponseModel.self)
+        // Combine sort_by, search by and search text to fetch data
+        Observable.combineLatest(reloadData, businessSortType, businessSearchType, searchText)
+            .map({ [weak self] (_, sortType, searchType, text) in
+                
+                let service = ServiceAPI.searchBusiness(latitude: self?.latitude ?? 0.0, longitude: self?.longitude ?? 0.0, sortBy: sortType.stringValue, searchBy: searchType, searchText: text)
+                self?.serviceAPI = service
+                return service
+            })
+            .flatMapLatest({ [weak self] service in
+                APIProvider
+                    .shared
+                    .request(service,
+                            mapObject: BusinessesResponseModel.self)
+                    .trackActivity(self?.loadingActivity ?? ActivityIndicator())
             })
             .asDriver { [weak self] error in
                 self?.errorRelay.accept((error as? APIError)?.description ?? "")
@@ -58,6 +85,11 @@ final class HomeViewModel: BaseViewModel {
     
     func fetchMoreBusiness(isPagination: Bool) {
         guard !isFirstLoad else { return }
+        guard let serviceAPI = serviceAPI else {
+            print("Cannot get the service API")
+            return
+        }
+
         if isPagination {
             isPaginationOn = true
         }
@@ -68,7 +100,9 @@ final class HomeViewModel: BaseViewModel {
             offSet += newOffset
         }
         print("----Offset: \(offSet)")
-        APIProvider.shared.request(.searchWithLocation(latitude: self.latitude ?? 0.0, longitude: self.longitude ?? 0.0, offSet: "\(offSet)"), mapObject: BusinessesResponseModel.self)
+        
+        APIProvider.shared.request(serviceAPI, offSet: "\(offSet)", mapObject: BusinessesResponseModel.self)
+            .trackActivity(self.loadingActivity)
             .asDriver { [weak self] error in
                     self?.errorRelay.accept((error as? APIError)?.description ?? "")
                     return Driver.empty()

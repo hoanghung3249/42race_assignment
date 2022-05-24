@@ -11,6 +11,12 @@ import RxSwift
 class HomeViewController: BaseViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchTextField: UITextField!
+    
+    @IBOutlet weak var sortBySegment: UISegmentedControl!
+    
+    @IBOutlet weak var searchBySegment: UISegmentedControl!
+    
     private let refreshControl = UIRefreshControl()
     private var viewModel = HomeViewModel()
     
@@ -24,6 +30,11 @@ class HomeViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        viewModel.loadingActivity
+            .asDriver()
+            .drive(indicatorView.rx.isAnimating)
+            .disposed(by: bag)
+        
         viewModel.businesses
             .subscribe(onNext: { [weak self] models in
                 guard let self = self else { return }
@@ -32,6 +43,26 @@ class HomeViewController: BaseViewController {
                     self.refreshControl.endRefreshing()
                 }
             }).disposed(by: bag)
+        
+        sortBySegment.rx
+            .value
+            .map({ BusinessSortType(rawValue: $0) ?? .distance })
+            .bind(to: viewModel.businessSortType)
+            .disposed(by: bag)
+        
+        searchBySegment.rx
+            .value
+            .map({ BusinessSearchType(rawValue: $0) ?? .term })
+            .bind(to: viewModel.businessSearchType)
+            .disposed(by: bag)
+        
+        searchTextField.rx
+            .text
+            .orEmpty
+            .debounce(.seconds(2), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .bind(to: viewModel.searchText)
+            .disposed(by: bag)
     }
     
     override func setupErrorBinding() {

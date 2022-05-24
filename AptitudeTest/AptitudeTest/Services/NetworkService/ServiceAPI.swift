@@ -37,6 +37,8 @@ enum ServiceAPI {
     // Business Search
     case searchWithLocation(latitude: Double, longitude: Double, offSet: String)
     
+    case searchBusiness(latitude: Double, longitude: Double, sortBy: String, searchBy: BusinessSearchType?, searchText: String)
+    
     // Business Detail
     case businessDetail(id: String)
     
@@ -57,6 +59,8 @@ extension ServiceAPI: APITarget {
         switch self {
         case .searchWithLocation(_, _, _):
             return "/businesses/search"
+        case .searchBusiness(_, _, _, _, _):
+            return "/businesses/search"
         case .businessDetail(let id):
             return "/businesses/\(id)"
         }
@@ -66,6 +70,7 @@ extension ServiceAPI: APITarget {
         switch self {
         case .searchWithLocation(_, _, _): return .get
         case .businessDetail(_): return .get
+        case .searchBusiness(_, _, _, _, _): return .get
         }
     }
     
@@ -73,6 +78,32 @@ extension ServiceAPI: APITarget {
         switch self {
         case .searchWithLocation(let latitude, let longitude, let offSet):
             return ["latitude": "\(latitude)", "longitude": "\(longitude)", "offset": "\(offSet)"]
+        case let .searchBusiness(latitude, longitude, sortBy, searchBy, searchText):
+            if let searchBy = searchBy {
+                switch searchBy {
+                case .term:
+                    var params = ["latitude": "\(latitude)", "longitude": "\(longitude)", "sort_by": sortBy]
+                    if !searchText.isEmpty {
+                        params["term"] = searchText
+                    }
+                    return params
+                case .address:
+                    var params = ["latitude": "\(latitude)", "longitude": "\(longitude)", "sort_by": sortBy]
+                    if !searchText.isEmpty {
+                        params["location"] = searchText
+                    }
+                    return params
+                case .cuisine:
+                    var params = ["latitude": "\(latitude)", "longitude": "\(longitude)", "sort_by": sortBy]
+                    if !searchText.isEmpty {
+                        params["categories"] = searchText
+                    }
+                    return params
+                }
+                
+            } else {
+                return ["latitude": "\(latitude)", "longitude": "\(longitude)", "sort_by": sortBy]
+            }
         default: return nil
         }
     }

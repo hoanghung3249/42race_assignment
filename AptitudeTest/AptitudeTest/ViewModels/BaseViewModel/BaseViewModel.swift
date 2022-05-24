@@ -12,6 +12,7 @@ import RxCocoa
 class BaseViewModel {
     var bag = DisposeBag()
     var errorRelay = PublishRelay<String>()
+    var loadingActivity = ActivityIndicator()
     
     var total = 0
     var offSet = 0
