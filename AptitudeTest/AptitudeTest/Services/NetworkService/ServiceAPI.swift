@@ -35,7 +35,7 @@ protocol APITarget {
 
 enum ServiceAPI {
     // Business Search
-    case searchWithLocation(latitude: Double, longitude: Double, offSet: String)
+    case searchWithLocation(latitude: Double, longitude: Double)
     
     case searchBusiness(latitude: Double, longitude: Double, sortBy: String, searchBy: BusinessSearchType?, searchText: String)
     
@@ -57,7 +57,7 @@ extension ServiceAPI: APITarget {
     
     var path: String {
         switch self {
-        case .searchWithLocation(_, _, _):
+        case .searchWithLocation(_, _):
             return "/businesses/search"
         case .searchBusiness(_, _, _, _, _):
             return "/businesses/search"
@@ -68,7 +68,7 @@ extension ServiceAPI: APITarget {
     
     var method: HTTPMethod {
         switch self {
-        case .searchWithLocation(_, _, _): return .get
+        case .searchWithLocation(_, _): return .get
         case .businessDetail(_): return .get
         case .searchBusiness(_, _, _, _, _): return .get
         }
@@ -76,8 +76,8 @@ extension ServiceAPI: APITarget {
     
     var parameters: [String : String]? {
         switch self {
-        case .searchWithLocation(let latitude, let longitude, let offSet):
-            return ["latitude": "\(latitude)", "longitude": "\(longitude)", "offset": "\(offSet)"]
+        case .searchWithLocation(let latitude, let longitude):
+            return ["latitude": "\(latitude)", "longitude": "\(longitude)"]
         case let .searchBusiness(latitude, longitude, sortBy, searchBy, searchText):
             if let searchBy = searchBy {
                 switch searchBy {

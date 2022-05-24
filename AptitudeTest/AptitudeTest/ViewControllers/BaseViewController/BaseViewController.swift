@@ -14,6 +14,8 @@ class BaseViewController: UIViewController {
     var bag = DisposeBag()
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
+    // MARK: - Life Cycles
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
@@ -21,12 +23,15 @@ class BaseViewController: UIViewController {
         setupErrorBinding()
     }
     
+    // Need to override this method if using tableview
     func setupTableView() {
     }
     
+    // Need to override this method for binding value
     func setupBinding() {
     }
     
+    // Need to override this method for binding error
     func setupErrorBinding() {
         
     }

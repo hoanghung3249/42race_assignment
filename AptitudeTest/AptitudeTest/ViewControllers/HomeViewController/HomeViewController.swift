@@ -12,9 +12,7 @@ class HomeViewController: BaseViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
-    
     @IBOutlet weak var sortBySegment: UISegmentedControl!
-    
     @IBOutlet weak var searchBySegment: UISegmentedControl!
     
     private let refreshControl = UIRefreshControl()
