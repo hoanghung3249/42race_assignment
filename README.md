@@ -2,7 +2,7 @@
 
 ## INTRODUCTION
 
-In this project I used MVVM design pattern and the app supports ios 12 and above. At first I didn't think that I would like to use 3rd party libraries because I haven't used RxSwift in a long time, but later I still decided to use RxSwift as a challenging to review my knowledge about this library. I used this library to bind data between ViewModel and ViewController.
+In this project I used MVVM design pattern and the app supports ios 12 and above. At first I didn't think that I would like to use 3rd party libraries because I haven't used RxSwift in a long time, but later I still decided to use RxSwift as a challenge to review my knowledge about this library. I used this library to bind data between ViewModel and ViewController.
 
 ## Features
 
